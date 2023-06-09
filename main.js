@@ -114,9 +114,52 @@ return car;
   const anIntermediateNode = { value: '||', left: aLeafNode1, right: aLeafNode2 };
 */
 
+const aLeafNode1 = { value: true };
+const aLeafNode2 = { value: false };
+const aLeafNode3 = { value: false };
+const aLeafNode5 = { value: false };
+const anIntermediateNode = { value: '||', left: aLeafNode1, right: aLeafNode2 };
+const anIntermediateNode2 = { value: '!', left: anIntermediateNode };
+const anIntermediateNode3 = { value: '&&', left: anIntermediateNode2, right: aLeafNode3 };
+const root = { value: '&&', left: aLeafNode5, right: anIntermediateNode3 };
+
+// ------------- VALAMIÉRT EZ A VERZÓ NEM MŰKÖDIK ------------------------ MIÉRT? -------------------------
+// const aLeafNode1 = { value: true };
+// const aLeafNode2 = { value: false };
+// const aLeafNode3 = { value: false };
+// const aLeafNode4 = { value: true };
+// const aLeafNode5 = { value: false };
+// const anIntermediateNode = { value: '||', left: aLeafNode1, right: aLeafNode2 };
+// const anIntermediateNode2 = { value: '!', left: anIntermediateNode };
+// const anIntermediateNode3 = { value: '&&', left: anIntermediateNode2, right: anIntermediateNode4 };
+// const root = { value: '&&', left: aLeafNode5, right: anIntermediateNode3 };
+// const anIntermediateNode4 = { value: '||', left: aLeafNode3, right: anIntermediateNode5 };
+// const anIntermediateNode5 = { value: '!', left: aLeafNode4 };
 
 
 // 6. Értékeld ki az előbb elkészített fát! (Azaz a végén kapj meg pontosan egy true vagy false értéket!)
+
+
+function evaluateExpression(node) {
+    if (typeof node.value === 'boolean') {
+      return node.value;
+    }
+  
+    switch (node.value) {
+      case '!':
+        return !evaluateExpression(node.left);
+      case '&&':
+        return evaluateExpression(node.left) && evaluateExpression(node.right);
+      case '||':
+        return evaluateExpression(node.left) || evaluateExpression(node.right);
+      default:
+        throw new Error('Ismeretlen operátor: ' + node.value);
+    }
+  }
+
+const result = evaluateExpression(root);
+console.log(result); // Az eredmény kiírása
+
 
 // 7. írj egy fv-t, ami paraméterül kap egy hosszt és olyan hosszú jelszót generál csak
 //    speciális karakterekből: #, !, ?, ., _, |, /, *, -, @
@@ -146,7 +189,7 @@ function generateSpecialCharacter() {
 // ha mind3 attribútum false, azaz: const invalidDescription = { lower: false, upper: false, special: false }
 // akkor adjon vissza egy üres string-et
 
-// 9. Írj egy fv-t, ami kap egy primitív: boolean, string, number, bigint értéket
+// 9. Írj egy fv-t, ami kap egy primitív: boolean, string, number, értéket
 // és visszaadja a becsomagolt értékét
 // Ha a fv, null v undefined-ot ad vissza, adj vissza egy üres objektumot
 // ha a fv egyéb értéket kap meg (másik fv, array, vagy objektum), akkor add vissza azt az értéket változtatás nélkül
